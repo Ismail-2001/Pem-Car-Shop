@@ -4,25 +4,64 @@ import { SERVICES } from '../constants';
 import { Check } from 'lucide-react';
 
 const Services: React.FC = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40, filter: "blur(4px)" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  };
+
   return (
     <section id="services" className="py-24 bg-lumina-charcoal relative">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-20"
+        >
           <h2 className="font-serif text-4xl md:text-5xl text-white mb-4">Curated Packages</h2>
-          <div className="h-1 w-20 bg-lumina-gold mx-auto" />
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 80 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="h-1 bg-lumina-gold mx-auto" 
+          />
           <p className="mt-6 text-gray-400 max-w-lg mx-auto">
             Tailored treatments designed to restore, enhance, and protect your investment.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {SERVICES.map((service, index) => (
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          {SERVICES.map((service) => (
             <motion.div
               key={service.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2, duration: 0.6 }}
+              variants={cardVariants}
               className={`group relative flex flex-col ${service.featured ? 'md:-mt-8 md:mb-8' : ''}`}
             >
               <div className={`glass-panel h-full p-8 flex flex-col transition-all duration-500 hover:border-lumina-gold/30 ${service.featured ? 'border-lumina-gold/50 bg-lumina-gold/5' : ''}`}>
@@ -32,7 +71,7 @@ const Services: React.FC = () => {
                   <img 
                     src={service.image} 
                     alt={service.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-lumina-black/20 group-hover:bg-transparent transition-colors duration-500" />
                 </div>
@@ -64,7 +103,7 @@ const Services: React.FC = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
